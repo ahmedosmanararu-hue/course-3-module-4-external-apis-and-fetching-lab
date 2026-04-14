@@ -27,13 +27,6 @@ async function fetchWeatherAlerts(state) {
 function displayAlerts(data, stateName) {
     const alertsContainer = document.getElementById('alerts-container');
     const summaryDiv = document.getElementById('summary');
-    const errorDiv = document.getElementById('error-message');
-    
-    // Hide error message on successful fetch
-    if (errorDiv) {
-        errorDiv.style.display = 'none';
-        errorDiv.innerHTML = '';
-    }
     
     const features = data.features || [];
     const alertCount = features.length;
@@ -99,7 +92,7 @@ function escapeHtml(str) {
     return div.innerHTML;
 }
 
-// Step 3: Clear and Reset the UI - Clears input field
+// Step 3: Clear and Reset the UI
 function resetUI() {
     const stateInput = document.getElementById('state');
     if (stateInput) {
@@ -108,21 +101,17 @@ function resetUI() {
     
     const alertsContainer = document.getElementById('alerts-container');
     const summaryDiv = document.getElementById('summary');
-    const errorDiv = document.getElementById('error-message');
     
     if (alertsContainer) alertsContainer.innerHTML = '';
     if (summaryDiv) summaryDiv.innerHTML = '';
-    if (errorDiv) {
-        errorDiv.style.display = 'none';
-        errorDiv.innerHTML = '';
-    }
 }
 
-// Step 4: Error Handling
+// Step 4: Error Handling with hidden class
 function showError(message) {
     const errorDiv = document.getElementById('error-message');
     if (errorDiv) {
         errorDiv.innerHTML = `<strong>Error:</strong> ${message}`;
+        errorDiv.classList.remove('hidden');
         errorDiv.style.display = 'block';
     }
 }
@@ -130,8 +119,9 @@ function showError(message) {
 function hideError() {
     const errorDiv = document.getElementById('error-message');
     if (errorDiv) {
-        errorDiv.style.display = 'none';
         errorDiv.innerHTML = '';
+        errorDiv.classList.add('hidden');
+        errorDiv.style.display = 'none';
     }
 }
 
@@ -167,8 +157,9 @@ function hideLoading() {
     }
 }
 
-// Main function - clears input after fetch
+// Main function
 async function handleWeatherAlerts() {
+    // Hide error message on new request
     hideError();
     showLoading();
     
@@ -195,10 +186,13 @@ async function handleWeatherAlerts() {
         const alertData = await fetchWeatherAlerts(stateAbbr);
         displayAlerts(alertData, stateName);
         
-        // Clear the input field after successful fetch (test requirement)
+        // Clear the input field after successful fetch
         if (stateInput) {
             stateInput.value = '';
         }
+        
+        // Ensure error is hidden with hidden class
+        hideError();
         
     } catch (error) {
         showError(error.message || 'Failed to fetch weather alerts');
