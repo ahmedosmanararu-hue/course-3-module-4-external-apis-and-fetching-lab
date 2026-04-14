@@ -7,25 +7,13 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
- <div class="container">
-        <h1>🌤️ Weather Alerts by State</h1>
-        <p class="subtitle">Enter a state abbreviation to view active weather alerts</p>
-        
-        <div class="search-section">
-            <input type="text" id="state" placeholder="Enter state abbreviation" ...>
-            <button id="fetch-alerts">Get Weather Alerts</button>
-        </div>
-        
-        <div id="loading-indicator">
-            <div class="spinner"></div>
-            <p>Fetching weather alerts...</p>
-        </div>
-        
-        <div id="error-message"></div>
-        
-        <div id="summary"></div>
-        <div id="alerts-container"></div>
-    </div>
+  <h1>Weather Alerts App</h1>
+ <input type="text" id="state" placeholder="Enter state abbreviation">
+<button id="fetch-alerts">Get Weather Alerts</button>
+<div id="error-message" style="display: none;"></div>
+<div id="loading-indicator" style="display: none;"></div>
+<div id="summary"></div>
+<div id="alerts-container"></div>
   <script src="./index.js"></script>
 </body>
 </html>

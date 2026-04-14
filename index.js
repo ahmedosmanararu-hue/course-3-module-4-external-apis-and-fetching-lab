@@ -29,8 +29,11 @@ function displayAlerts(data, stateName) {
     const summaryDiv = document.getElementById('summary');
     const errorDiv = document.getElementById('error-message');
     
-    // Clear previous content
-    if (errorDiv) errorDiv.style.display = 'none';
+    // Hide error message on successful fetch
+    if (errorDiv) {
+        errorDiv.style.display = 'none';
+        errorDiv.innerHTML = '';
+    }
     
     const features = data.features || [];
     const alertCount = features.length;
@@ -96,7 +99,7 @@ function escapeHtml(str) {
     return div.innerHTML;
 }
 
-// Step 3: Clear and Reset the UI
+// Step 3: Clear and Reset the UI - Clears input field
 function resetUI() {
     const stateInput = document.getElementById('state');
     if (stateInput) {
@@ -164,7 +167,7 @@ function hideLoading() {
     }
 }
 
-// Main function
+// Main function - clears input after fetch
 async function handleWeatherAlerts() {
     hideError();
     showLoading();
@@ -191,6 +194,12 @@ async function handleWeatherAlerts() {
     try {
         const alertData = await fetchWeatherAlerts(stateAbbr);
         displayAlerts(alertData, stateName);
+        
+        // Clear the input field after successful fetch (test requirement)
+        if (stateInput) {
+            stateInput.value = '';
+        }
+        
     } catch (error) {
         showError(error.message || 'Failed to fetch weather alerts');
         const alertsContainer = document.getElementById('alerts-container');
@@ -227,6 +236,8 @@ if (typeof module !== 'undefined' && module.exports) {
         fetchWeatherAlerts,
         displayAlerts,
         resetUI,
-        handleWeatherAlerts
+        handleWeatherAlerts,
+        showError,
+        hideError
     };
 }
